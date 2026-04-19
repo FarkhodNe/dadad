@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Professions - Cyberpunk 3D Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8892b0;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .professions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .profession-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profession-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ff88);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profession-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2),
+                        0 0 30px rgba(255, 0, 255, 0.1);
+        }
+
+        .profession-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .profession-title {
+            font-size: 1.8rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profession-description {
+            color: #ccd6f6;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            color: #8892b0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .professions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00ffff, #ff00ff);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div class="content">
+        <header>
+            <h1>IT PROFESSIONS</h1>
+            <p class="subtitle">Explore the vast digital landscape of technology careers. Scroll to journey through the cyberpunk world of IT specializations.</p>
+        </header>
+
+        <div class="professions-grid">
+            <div class="profession-card">
+                <span class="icon">💻</span>
+                <h2 class="profession-title">Software Engineering</h2>
+                <p class="profession-description">Architects of the digital world who design, develop, and maintain software systems. From web applications to operating systems, they build the foundation of modern technology.</p>
+                <div class="skills">
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Node.js</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">🔒</span>
+                <h2 class="profession-title">Cybersecurity</h2>
+                <p class="profession-description">Digital guardians who protect systems, networks, and data from cyber threats. They analyze vulnerabilities, implement security measures, and respond to incidents.</p>
+                <div class="skills">
+                    <span class="skill-tag">Network Security</span>
+                    <span class="skill-tag">Ethical Hacking</span>
+                    <span class="skill-tag">Cryptography</span>
+                    <span class="skill-tag">SIEM</span>
+                    <span class="skill-tag">Risk Assessment</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">📊</span>
+                <h2 class="profession-title">Data Science</h2>
+                <p class="profession-description">Extract insights from complex datasets using statistical analysis, machine learning, and visualization. They turn raw data into actionable business intelligence.</p>
+                <div class="skills">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">R</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Machine Learning</span>
+                    <span class="skill-tag">Tableau</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">☁️</span>
+                <h2 class="profession-title">DevOps Engineering</h2>
+                <p class="profession-description">Bridge the gap between development and operations. They automate deployment pipelines, manage cloud infrastructure, and ensure continuous integration and delivery.</p>
+                <div class="skills">
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">Kubernetes</span>
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">CI/CD</span>
+                    <span class="skill-tag">Terraform</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">🎨</span>
+                <h2 class="profession-title">UI/UX Design</h2>
+                <p class="profession-description">Create intuitive and beautiful user experiences. They research user needs, design interfaces, and prototype interactions to make technology accessible and enjoyable.</p>
+                <div class="skills">
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Adobe XD</span>
+                    <span class="skill-tag">User Research</span>
+                    <span class="skill-tag">Prototyping</span>
+                    <span class="skill-tag">Wireframing</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">🤖</span>
+                <h2 class="profession-title">AI/ML Engineering</h2>
+                <p class="profession-description">Develop intelligent systems that learn and adapt. They build neural networks, train models, and deploy AI solutions that power everything from chatbots to autonomous vehicles.</p>
+                <div class="skills">
+                    <span class="skill-tag">TensorFlow</span>
+                    <span class="skill-tag">PyTorch</span>
+                    <span class="skill-tag">Deep Learning</span>
+                    <span class="skill-tag">NLP</span>
+                    <span class="skill-tag">Computer Vision</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">📱</span>
+                <h2 class="profession-title">Mobile Development</h2>
+                <p class="profession-description">Craft applications for smartphones and tablets. They create native or cross-platform mobile experiences that connect users with services on the go.</p>
+                <div class="skills">
+                    <span class="skill-tag">Swift</span>
+                    <span class="skill-tag">Kotlin</span>
+                    <span class="skill-tag">React Native</span>
+                    <span class="skill-tag">Flutter</span>
+                    <span class="skill-tag">iOS/Android</span>
+                </div>
+            </div>
+
+            <div class="profession-card">
+                <span class="icon">🌐</span>
+                <h2 class="profession-title">Cloud Architecture</h2>
+                <p class="profession-description">Design and implement scalable cloud infrastructure. They optimize costs, ensure reliability, and architect solutions that leverage the power of distributed computing.</p>
+                <div class="skills">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">Azure</span>
+                    <span class="skill-tag">GCP</span>
+                    <span class="skill-tag">Microservices</span>
+                    <span class="skill-tag">Serverless</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Scroll through the digital realm • Built with Three.js & Glassmorphism</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create particle system
+        const particleCount = 2000;
+        const particles = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        const colorPalette = [
+            new THREE.Color('#00ffff'),
+            new THREE.Color('#ff00ff'),
+            new THREE.Color('#00ff88'),
+            new THREE.Color('#0088ff')
+        ];
+
+        for (let i = 0; i < particleCount; i++) {
+            const i3 = i * 3;
+            positions[i3] = (Math.random() - 0.5) * 100;
+            positions[i3 + 1] = (Math.random() - 0.5) * 100;
+            positions[i3 + 2] = (Math.random() - 0.5) * 100;
+
+            const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+            colors[i3] = color.r;
+            colors[i3 + 1] = color.g;
+            colors[i3 + 2] = color.b;
+        }
+
+        particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.3,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+
+        // Create wireframe globe
+        const globeGeometry = new THREE.IcosahedronGeometry(15, 2);
+        const globeMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.3
+        });
+        const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+        scene.add(globe);
+
+        // Create secondary geometric shapes
+        const shapes = [];
+        const shapeGeometries = [
+            new THREE.OctahedronGeometry(8, 0),
+            new THREE.TetrahedronGeometry(6, 0),
+            new THREE.DodecahedronGeometry(7, 0)
+        ];
+
+        const shapeMaterials = [
+            new THREE.MeshBasicMaterial({ color: 0xff00ff, wireframe: true, transparent: true, opacity: 0.2 }),
+            new THREE.MeshBasicMaterial({ color: 0x00ff88, wireframe: true, transparent: true, opacity: 0.2 }),
+            new THREE.MeshBasicMaterial({ color: 0x0088ff, wireframe: true, transparent: true, opacity: 0.2 })
+        ];
+
+        for (let i = 0; i < 3; i++) {
+            const shape = new THREE.Mesh(shapeGeometries[i], shapeMaterials[i]);
+            shape.position.x = (Math.random() - 0.5) * 40;
+            shape.position.y = (Math.random() - 0.5) * 40;
+            shape.position.z = (Math.random() - 0.5) * 40;
+            shapes.push(shape);
+            scene.add(shape);
+        }
+
+        // Create connecting lines
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x00ffff, 
+            transparent: true, 
+            opacity: 0.1 
+        });
+
+        const connections = new THREE.BufferGeometry();
+        const connectionCount = 100;
+        const connectionPositions = new Float32Array(connectionCount * 6);
+
+        for (let i = 0; i < connectionCount; i++) {
+            const i6 = i * 6;
+            connectionPositions[i6] = (Math.random() - 0.5) * 60;
+            connectionPositions[i6 + 1] = (Math.random() - 0.5) * 60;
+            connectionPositions[i6 + 2] = (Math.random() - 0.5) * 60;
+            connectionPositions[i6 + 3] = (Math.random() - 0.5) * 60;
+            connectionPositions[i6 + 4] = (Math.random() - 0.5) * 60;
+            connectionPositions[i6 + 5] = (Math.random() - 0.5) * 60;
+        }
+
+        connections.setAttribute('position', new THREE.BufferAttribute(connectionPositions, 3));
+        const lineSegments = new THREE.LineSegments(connections, lineMaterial);
+        scene.add(lineSegments);
+
+        // Camera positioning
+        camera.position.z = 30;
+
+        // Mouse interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.001;
+        });
+
+        // Scroll-based animation
+        let scrollY = 0;
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        // Animation loop
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.001;
+
+            targetX = mouseX * 2;
+            targetY = mouseY * 2;
+
+            // Rotate entire particle system
+            particleSystem.rotation.y += 0.001;
+            particleSystem.rotation.x += 0.0005;
+
+            // Scroll-based rotation
+            globe.rotation.y = scrollY * 0.002;
+            globe.rotation.x = scrollY * 0.001;
+
+            // Animate shapes
+            shapes.forEach((shape, index) => {
+                shape.rotation.x += 0.002 * (index + 1);
+                shape.rotation.y += 0.003 * (index + 1);
+                shape.position.y += Math.sin(time * 2 + index) * 0.02;
+            });
+
+            // Smooth camera movement based on mouse
+            camera.position.x += (targetX - camera.position.x) * 0.05;
+            camera.position.y += (-targetY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            // Scroll-based zoom and parallax
+            camera.position.z = 30 - scrollY * 0.01;
+            particleSystem.position.y = -scrollY * 0.005;
+
+            // Pulse effect for globe
+            const scale = 1 + Math.sin(time * 3) * 0.05;
+            globe.scale.set(scale, scale, scale);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Add subtle glow effect
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+    </script>
+</body>
+</html>
