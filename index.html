@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Space | Cybernetic Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #050505;
+            --accent-purple: #4f00ff;
+            --accent-cyan: #00d4ff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            overscroll-behavior: none;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 600px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-8px);
+            border-color: rgba(79, 0, 255, 0.3);
+            box-shadow: 
+                0 16px 48px rgba(79, 0, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            color: var(--accent-cyan);
+            font-weight: 500;
+        }
+
+        .accent-purple {
+            color: var(--accent-purple);
+        }
+
+        .accent-cyan {
+            color: var(--accent-cyan);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-purple));
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .section-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.05);
+            z-index: 2;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(79, 0, 255, 0.1);
+            border: 1px solid rgba(79, 0, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(79, 0, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .feature-item p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .glass-panel {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .section-number {
+                font-size: 3rem;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="scroll-indicator">
+        <span>Scroll to Explore</span>
+        <div class="scroll-line"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <section id="section-1">
+            <div class="section-number">01</div>
+            <div class="glass-panel">
+                <h1>Quantum Space</h1>
+                <p>Welcome to the <span class="highlight">cybernetic frontier</span> where technology meets infinity. Journey through a particle tunnel that represents the boundless possibilities of digital innovation.</p>
+                <p>Scroll down to begin your traversal through the quantum realm, where each section reveals new dimensions of technological advancement.</p>
+            </div>
+        </section>
+
+        <section id="section-2">
+            <div class="section-number">02</div>
+            <div class="glass-panel">
+                <h2>Particle Dynamics</h2>
+                <p>Witness the <span class="accent-cyan">living geometry</span> of data streams flowing through cyberspace. Each particle represents a node in the vast network of information that powers our digital world.</p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3>Velocity</h3>
+                        <p>Real-time rendering</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Depth</h3>
+                        <p>Z-axis traversal</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Flow</h3>
+                        <p>Dynamic gradients</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-3">
+            <div class="section-number">03</div>
+            <div class="glass-panel">
+                <h2>Neural Pathways</h2>
+                <p>Navigate through the <span class="accent-purple">synaptic connections</span> that form the backbone of artificial intelligence. The tunnel's structure mirrors the complexity of neural networks.</p>
+                <p>As you scroll deeper, notice how the camera rotation and position respond to your interaction, creating an immersive experience that blurs the line between user and environment.</p>
+            </div>
+        </section>
+
+        <section id="section-4">
+            <div class="section-number">04</div>
+            <div class="glass-panel">
+                <h2>Infinite Horizon</h2>
+                <p>You've reached the <span class="highlight">event horizon</span> of this quantum journey. The particles around you represent the endless potential of future technologies waiting to be discovered.</p>
+                <p>This is not the end—it's merely a checkpoint in the continuous evolution of digital experiences. The universe of possibilities extends infinitely beyond.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+        // Camera
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ 
+            antialias: true, 
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Create particle tunnel
+        const particleCount = 15000;
+        const tunnelLength = 200;
+        const tunnelRadius = 8;
+
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        const sizes = new Float32Array(particleCount);
+
+        const color1 = new THREE.Color('#4f00ff'); // Purple
+        const color2 = new THREE.Color('#00d4ff'); // Cyan
+
+        for (let i = 0; i < particleCount; i++) {
+            // Create tunnel structure
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.random() * tunnelRadius + 2;
+            const z = (Math.random() - 0.5) * tunnelLength;
+
+            // Add some spiral effect
+            const spiralOffset = z * 0.1;
+            const x = Math.cos(angle + spiralOffset) * radius;
+            const y = Math.sin(angle + spiralOffset) * radius;
+
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
+
+            // Gradient based on Z position
+            const t = (z + tunnelLength / 2) / tunnelLength;
+            const color = color1.clone().lerp(color2, t);
+
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
+
+            // Vary particle sizes
+            sizes[i] = Math.random() * 2 + 0.5;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        // Custom shader material for particles
+        const material = new THREE.PointsMaterial({
+            size: 0.15,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        // Add secondary ring structures for depth
+        const ringCount = 50;
+        const ringGeometry = new THREE.RingGeometry(0.5, 0.8, 32);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0x4f00ff,
+            transparent: true,
+            opacity: 0.3,
+            side: THREE.DoubleSide
+        });
+
+        for (let i = 0; i < ringCount; i++) {
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial.clone());
+            const z = (Math.random() - 0.5) * tunnelLength;
+            ring.position.z = z;
+            ring.rotation.x = Math.PI / 2;
+            ring.scale.setScalar(2 + Math.random() * 3);
+            
+            // Random color between purple and cyan
+            const t = Math.random();
+            ring.material.color = color1.clone().lerp(color2, t);
+            ring.material.opacity = 0.2 + Math.random() * 0.3;
+            
+            scene.add(ring);
+        }
+
+        // Scroll handling
+        let scrollProgress = 0;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+
+        function updateScroll() {
+            const currentScroll = window.scrollY;
+            scrollProgress = currentScroll / maxScroll;
+
+            // Move camera through tunnel
+            camera.position.z = 5 - scrollProgress * 150;
+            
+            // Add rotation based on scroll
+            camera.rotation.z = scrollProgress * Math.PI * 2;
+            camera.rotation.x = Math.sin(scrollProgress * Math.PI) * 0.2;
+            
+            // Subtle mouse influence
+            camera.position.x += (mouseX - camera.position.x) * 0.02;
+            camera.position.y += (-mouseY - camera.position.y) * 0.02;
+        }
+
+        // Mouse tracking
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+        });
+
+        // Handle scroll
+        window.addEventListener('scroll', updateScroll);
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate entire particle system slowly
+            particles.rotation.z += 0.001;
+            particles.rotation.x += 0.0005;
+
+            // Animate rings
+            scene.children.forEach(child => {
+                if (child instanceof THREE.Mesh && child.geometry.type === 'RingGeometry') {
+                    child.rotation.z += 0.002;
+                    child.position.z = (child.position.z + 0.1) % (tunnelLength / 2) - tunnelLength / 4;
+                }
+            });
+
+            // Continuous scroll update for smoothness
+            updateScroll();
+
+            renderer.render(scene, camera);
+        }
+
+        // Start animation
+        animate();
+
+        // Smooth scroll behavior for sections
+        document.querySelectorAll('section').forEach((section, index) => {
+            if (index > 0) {
+                section.style.scrollMarginTop = '0';
+            }
+        });
+
+        // Hide scroll indicator after first scroll
+        let hasScrolled = false;
+        window.addEventListener('scroll', () => {
+            if (!hasScrolled && window.scrollY > 100) {
+                hasScrolled = true;
+                document.querySelector('.scroll-indicator').style.opacity = '0';
+                document.querySelector('.scroll-indicator').style.transition = 'opacity 0.5s ease';
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
